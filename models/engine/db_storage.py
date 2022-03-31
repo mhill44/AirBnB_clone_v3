@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the class and modules for DBStorage
+Contains the class DBStorage
 """
 
 import models
@@ -41,7 +41,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """queries about the current database session"""
+        """query on the current database session"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -52,7 +52,7 @@ class DBStorage:
         return (new_dict)
 
     def new(self, obj):
-        """adds the object to the current database session"""
+        """add the object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
@@ -65,32 +65,29 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """
-        reloads data from the db
-        """
+        """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
 
     def close(self):
-        """
-        calls the remove() method on private session named 'attribute'
-        """
+        """call remove() method on the private session attribute"""
         self.__session.remove()
 
     def get(self, cls, id):
-        """method to retrieve 1 object"""
-        for values in self.all(cls).values():
-            if values.id == id:
-                return values
-        return None
+        """returns the object based on the class and its ID,
+        None if not found"""
+        allObjs = self.all(cls)
+        thisObj = cls.__name__ + '.' + id
+        if thisObj in allObjs:
+            return allObjs[thisObj]
+        else:
+            return None
 
     def count(self, cls=None):
-        """
-        method to count the number of objects in the storage
-        """
-        if cls is None:
-            return len(self.all())
-        else:
+        """returns the number of matching objs in given class"""
+        if cls:
             return len(self.all(cls))
+        else:
+            return len(self.all())
