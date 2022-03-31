@@ -107,3 +107,9 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+    
+    def test_storage_var_created(self):
+        """saving everything"""
+        
+        
+    def test_storage_var_created(self):
