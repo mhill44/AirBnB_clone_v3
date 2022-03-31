@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the class called FileStorage
+Contains the class called FileStorage, and the modules from models imported
 """
 
 import json
